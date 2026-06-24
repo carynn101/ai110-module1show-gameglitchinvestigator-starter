@@ -38,8 +38,16 @@ Document at least 3 bugs you found. Add rows as needed.
 ## 2. How did you use AI as a teammate?
 
 - Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
+
+I used Claude code and Claude chat. I tried using Copilot but preferred Claude's interface more.
+
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
+
+It identified the reversed Higher/Lower hints in check_guess. That "too high" returns "Go HIGHER" when it should say "Go LOWER." How I verified: I'd already seen this live with the secret at 10, when guessing an 8 (below it) told me to "Go LOWER." The AI's diagnosis matched the game's actual behavior.
+
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
+
+The AI described winning on even-numbered attempts as "inconsistent" and only "incidental" caught by accident in an error handler. How I verified: I tested it directly. I started a new game, saw the secret was 50, and guessed 50 on my first (even) attempt. The game registered the win cleanly by displaying balloons, "You won," final score 70. So the win detection is not unreliable the way the AI implied; the except TypeError block catches an exact match every time. The thing that actually makes the game feel unwinnable is the backwards hints leading you away from the answer, not the win check.
 
 ---
 
