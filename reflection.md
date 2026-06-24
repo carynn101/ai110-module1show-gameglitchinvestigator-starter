@@ -54,9 +54,34 @@ The AI described winning on even-numbered attempts as "inconsistent" and only "i
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
+
+I didn't trust any single signal. For each fix I checked it two ways: an automated
+pytest test for the pure logic, and a live run of the game in the browser to confirm
+the behavior end to end. A bug only counted as "fixed" when both agreed. For example,
+pytest confirmed check_guess(60, 50) returns "Too High" with a "Go LOWER" hint, and
+then I played the game and saw that guessing below the secret now correctly says
+"Go HIGHER." For the New Game fix, pytest couldn't cover it (it's UI state, not pure
+logic), so I verified it manually: I won a round, clicked New Game, and confirmed the
+game actually restarted instead of staying stuck on the "You already won" screen.
+
+- Describe at least one test you ran (manual or using pytest) and what it showed you about your code.
+
+I ran `python -m pytest -q` against tests/test_game_logic.py. The first run actually taught me something important: all three starter tests FAILED, but not because my code was wrong. The failures showed `assert ('Win', '🎉 Correct!') == 'Win'`, my check_guess function correctly returns a tuple of (outcome, message), but the starter tests were written to compare against only the string "Win". So the tests had the wrong expectation. I fixed the tests to unpack the tuple (`outcome, message = check_guess(...)`) and assert on the outcome, and added a check that the message points in the right direction ("LOWER" for a too-high guess). After that, all 3 passed!
+This was a good reminder that a failing test doesn't automatically mean the code is
+broken. Sometimes the test itself is wrong, and it's my job to decide which.
+
 - Did AI help you design or understand any tests? How?
+
+Yes. I used Claude Code to do the refactor (moving the four functions into
+logic_utils.py and fixing the reversed hints), and I reviewed every diff before
+approving it rather than accepting the edits blindly. I used Claude chat to help me
+design the pytest cases — specifically to assert on both the outcome and the hint
+direction, so the test actually proves the reversal bug is fixed rather than just
+checking the label. AI also helped me diagnose two non-code issues: a
+`ModuleNotFoundError: No module named 'logic_utils'` (a pytest path problem, solved by
+running `python -m pytest` from the project root) and the failing-tests situation above,
+where I had to verify in the code that the tuple return was correct before changing the
+tests.
 
 ---
 
