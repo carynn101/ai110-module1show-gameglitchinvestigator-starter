@@ -72,7 +72,8 @@ Describe your fixed game in numbered steps so a reader can follow along without 
 6. User clicks "New Game" → the game resets with a new secret and is immediately playable
    again.
 
-**Screenshot** *(optional)*: 
+
+**Screenshot** *(optional)*: ![Winning game screenshot showing the player guessed 50 correctly](assets/winning-game.png)
 
 ## 🧪 Test Results
 
