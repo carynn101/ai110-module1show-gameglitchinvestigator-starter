@@ -5,8 +5,21 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 ## 1. What was broken when you started?
 
 - What did the game look like the first time you ran it?
+
+  The app launched fine in the browser at localhost:8501 and looked like a normal
+  Streamlit number guessing game. It had a title, a difficulty selector, a guess box, and
+  Submit / New Game buttons. Nothing crashed. But once I opened the Developer Debug
+  Info panel (which shows the secret number) and started playing, the game's responses
+  didn't match reality. The directional hints contradicted each other, and I couldn't
+  win even when I guessed the exact secret number.
+
 - List at least two concrete bugs you noticed at the start  
-  (for example: "the hints were backwards").
+
+1. The Higher/Lower hints are backwards. With the secret showing as 10, guessing 8 (which is below 10) told me to "Go LOWER" instead of "Go HIGHER."
+2. Two guesses that are both below the secret gave contradictory directions. Guessing 7 said "Go HIGHER" but guessing 8 said "Go LOWER," even though the secret stayed 10 the whole time.
+3. I couldn't win on certain attempts even when I guessed the exact secret. Typing the correct number on an even-numbered attempt was not registered as a win and the game just continued.
+4. The "New Game" button doesn't fully reset the game. After winning a round, clicking New Game left me stuck on the "You already won" screen instead of starting fresh.
+
 
 **Bug Reproduction Log**
 
@@ -14,9 +27,11 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| Guess 8 when secret is 10 | "📈 Go HIGHER!" (8 is below 10) | "📉 Go LOWER!" shown | none |
+| Guess 7 then 8, secret stays 10 | Both guesses say "Go HIGHER" | 7 → Go HIGHER, 8 → Go LOWER (contradictory) | none |
+| Guess exactly 10 on an even-numbered attempt | "🎉 Correct!" / win registered | Not counted as a win; game continues | none |
+| Click "New Game" after winning a round | Game resets and is playable | Stuck on "You already won" screen | none |
+ 
 
 ---
 
